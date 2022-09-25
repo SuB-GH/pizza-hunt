@@ -6,8 +6,15 @@ const { Pizza } = require('../models');
 
 const pizzaController = {
     // this method will get all pizza data and will serve as the callback function for the GET /api/pizzas route. It uses the Mongoose .find() method
+    // .populate shows the actual comment, not just the id. select with minus sign means we don't want "v" returned. sort method sorts in descending order by id value
     getAllPizza(req, res) {
         Pizza.find({})
+            .populate({
+                path: 'comments',
+                select: '-__v'
+            })
+            .select('-__v')
+            .sort({ _id: -1 })
             .then(dbPizzaData => res.json(dbPizzaData))
             .catch(err => {
                 console.log(err);
@@ -18,8 +25,12 @@ const pizzaController = {
     // this method ".getPizzaById()", uses the Mongoose .findOne() method to find a single pizza by its _id. Instead of accessing the entire req, we've destructured params out of it, because that's the only data we need for this request to be fulfilled.
     getPizzaById({ params }, res) {
         Pizza.findOne({ _id: params.id })
+            .populate({
+                path: 'comments',
+                select: '-__v'
+            })
+            .select('-__v')
             .then(dbPizzaData => {
-                // If no pizza is found, send 404
                 if (!dbPizzaData) {
                     res.status(404).json({ message: 'No pizza found with this id!' });
                     return;
