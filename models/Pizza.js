@@ -29,7 +29,7 @@ const PizzaSchema = new Schema(
     ]
   },
   {
-    // this "toJSON" tells the schema that it can use virtuals 
+    // this "toJSON" tells the schema that it can use virtuals and getters
     toJSON: {
       virtuals: true,
       getters: true
@@ -39,8 +39,8 @@ const PizzaSchema = new Schema(
 );
 
 // get total count of comments and replies on retrieval. Virtuals allow us to add more information to a database response so that we don't have to add in the information manually with a helper before responding to the API request
-PizzaSchema.virtual('commentCount').get(function () {
-  return this.comments.length;
+PizzaSchema.virtual('commentCount').get(function() {
+  return this.comments.reduce((total, comment) => total + comment.replies.length + 1, 0);
 });
 
 // create the Pizza model using the PizzaSchema

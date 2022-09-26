@@ -1,5 +1,6 @@
 const $pizzaList = document.querySelector('#pizza-list');
 
+// this gets all of our pizza data and transforms it into JSON data. 
 const getPizzaList = () => {
   fetch('/api/pizzas')
     .then(response => response.json())
