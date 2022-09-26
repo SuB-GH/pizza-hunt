@@ -24,6 +24,7 @@ function getPizza() {
       return response.json();
     })
     .then(printPizza)
+    // catch method takes user back to homepage using window.history.back
     .catch(err => {
       console.log(err);
       alert('Cannot find a pizza with this id! Taking you back.');

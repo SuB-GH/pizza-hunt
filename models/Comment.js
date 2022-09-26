@@ -2,16 +2,18 @@ const { Schema, model, Types } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 const ReplySchema = new Schema(
   {
-     // set custom id to avoid confusion with parent comment _id
-     replyId: {
+    // set custom id to avoid confusion with parent comment _id
+    replyId: {
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId()
     },
     replyBody: {
-      type: String
+      type: String,
+      required: true
     },
     writtenBy: {
-      type: String
+      type: String,
+      required: true,
     },
     createdAt: {
       type: Date,
@@ -28,16 +30,19 @@ const ReplySchema = new Schema(
 
 const CommentSchema = new Schema({
   writtenBy: {
-    type: String
+    type: String,
+    required: true,
   },
   commentBody: {
-    type: String
+    type: String,
+    required: true,
   },
   createdAt: {
     type: Date,
     default: Date.now,
     get: createdAtVal => dateFormat(createdAtVal)
   },
+  // this is what is associating replies with comments
   replies: [ReplySchema],
 },
   {
