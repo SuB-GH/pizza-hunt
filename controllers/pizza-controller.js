@@ -48,23 +48,23 @@ const pizzaController = {
     createPizza({ body }, res) {
         Pizza.create(body)
             .then(dbPizzaData => res.json(dbPizzaData))
-            .catch(err => res.status(400).json(err));
+            .catch(err => res.json(err));
     },
 
     // update pizza by id
     // this updates a pizza when we make a request to PUT /api/pizzas/:id. this finds the single document, updates it and returns the updated doc. {new: true} is what returns the new/updated doc, not the original
- // update pizza by id
-updatePizza({ params, body }, res) {
-    Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
-      .then(dbPizzaData => {
-        if (!dbPizzaData) {
-          res.status(404).json({ message: 'No pizza found with this id!' });
-          return;
-        }
-        res.json(dbPizzaData);
-      })
-      .catch(err => res.status(400).json(err));
-  },
+    // update pizza by id
+    updatePizza({ params, body }, res) {
+        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+            .then(dbPizzaData => {
+                if (!dbPizzaData) {
+                    res.status(404).json({ message: 'No pizza found with this id!' });
+                    return;
+                }
+                res.json(dbPizzaData);
+            })
+            .catch(err => res.status(400).json(err));
+    },
 
     // delete pizza
     deletePizza({ params }, res) {
